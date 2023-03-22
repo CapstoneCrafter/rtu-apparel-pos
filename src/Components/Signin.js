@@ -1,80 +1,122 @@
-import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import React, {useState, useEffect, useRef} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import {collection, where, query, getDocs, addDoc} from 'firebase/firestore'
+import {  useAuth } from '../Functions/authContext'
+import { db } from '../Database/firebase'
 
 import {AiFillMail,
         AiFillFacebook,
         AiFillInstagram,
         AiOutlineEye,
-        AiOutlineEyeInvisible
+        AiOutlineEyeInvisible,
+        AiOutlineMail
 
 } from 'react-icons/ai'
 
+import signin from './signin.css'
+
+import posUI from '../Assets/mainPOS.png'
+
 
 const Signin = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const userCollectionRef = collection(db, "users-info" )
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const {signIn} = useAuth()
+  const mounted = useRef(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  const [showPassword, setShowPassword] = useState(false)
+  useEffect(() => {
+    mounted.current = true
+    return() => {
+        mounted.current = false
+    }
+}, [])
 
-  const showPasswordIcon = () => {
-    setShowPassword(prev => !prev)
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  setError('')
+
+  if (!email || !password) {
+    setError('')
+    return
   }
+
+  setIsSubmitting(true)
+
+  signIn(email, password)
+    .then(async (response) => {
+      // console.log(response)
+
+      // Check if a document with this email exists
+      const existingUserQuery = query(userCollectionRef, where('email', '==', email))
+      const existingUserDocs = await getDocs(existingUserQuery)
+
+      if (existingUserDocs.size === 0) {
+        setError('User does not exist')
+        return
+      }
+
+      // Get the role of the user
+      const role = existingUserDocs.docs[0].data().role
+
+      // Check if the user is an admin
+      if (role === 'admin') {
+        navigate('/RTUApparel')
+      } else {
+        navigate('/restricted')
+      }
+    })
+    .catch((error) => {
+      console.log(error.message)
+      setError(error.message)
+    })
+    .finally(() => mounted.current && setIsSubmitting(false))
+}
   return (
-    <div className='bg-gradient-to-r from-stone-200 via-stone-200 to-stone-200 h-screen flex justify-center items-center'>
-    <div className='max-w-7xl mx-auto'>
-    <div className='md:flex md:items-center  '>
-    <div className='mx-5 h-32   md:h-44 lg:h-52 '>
-    
-    <div className='text-center md:text-left md:w-80 lg:w-[40rem]'>
-      <h1 className='text-3xl font-bold text-indigo-600 font-mono md:text-5xl lg:text-6xl '>Howdy!</h1>
-      <h1 className='text-xl font-bold text-orange-500 font-mono md:text-left md:text-2xl lg:text-5xl '>Welcome to RTU Apparel's points of sale</h1>
-      <p className='text-md text-gray-500 italic  md:text-justify '>To begin processing transactions at RTU Apparel POS, please login using your credentials.</p>
-    </div>
-      
-    </div>
+    <div className='h-screen md:flex justify-center items-center'>
 
-    <div className='mx-5 h-auto lg:w-96'>
-    <div>
-      <form>
-        <div className='mx-5 mb-5 pt-5 '>
-        <input type='email' placeholder='Email' className='w-full p-3  border bg-transparent rounded-lg border-black outline-orange-500' required />
+        <img className='order-last md:w-3/5 lg:w-6/12 2xl:w-8/12 2xl:h-screen' src={posUI} alt=''/>
+        
+        <div className='md:w-2/5 md:h-[460px] lg:h-[520px] lg:w-6/12 xl:mx-10 2xl:w-4/12  '>
+          <form onSubmit={handleSubmit}>
+            <div className='mx-5 mt-5 md:mt-20'>
+              <label className='font-semibold text-sm text-gray-500 md:text-black'>EMAIL</label>
+              <input 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type='email' 
+              placeholder='Enter your email' 
+              className='w-full p-3 bg-transparent border rounded-md outline-none text-sm'/>
+            </div>
+
+            <div className='mx-5 mt-5'>
+              <label className='font-semibold text-sm text-gray-500'>PASSWORD</label>
+              <input 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type='password' 
+              placeholder='Enter your password' 
+              className='w-full p-3 bg-transparent border rounded-md outline-none text-sm'/>
+            </div>
+
+            <div className='mx-5 mt-10'>
+          
+            <button className='bg-indigo-600 w-full p-3 rounded-lg text-white font-semibold'>Sign In</button>
+            {error && <p className='mt-2 text-center text-red-500 font-semibold italic text-md'>{error}</p>}
+  
+          
+
+          </div>
+          </form>
+
+         
         </div>
-
-        <div className='mx-5 mb-10 flex '>
-        <input type={showPassword ? 'text' : 'password'} placeholder='Password' className='w-full p-3 border bg-transparent rounded-lg border-black outline-orange-500' required />
-
-        <div onClick={showPasswordIcon} className='-ml-10 mt-4'>
-        {showPassword ?  <AiOutlineEye size={20}/> :  <AiOutlineEyeInvisible size={20}/>} 
-        </div>
-        </div>
-
-       
-
-        <div className='mx-5 border-b border-gray-400 pb-10 '>
-       <Link to='RTUApparel/home'> <button className='w-full bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600 text-white p-3 rounded-md hover:opacity-50'>Sign in</button></Link>
-        </div>
-      </form>
-
-     
-    </div>
-
-    <div className='mx-5 text-justify text-sm italic text-gray-500 pt-10 lg:pt-5'>
-    <p className=''>Before logging in, please be aware that the credentials you will need to use have been provided by the system operator; if you have any questions or concerns, 
-    please don't hesitate to contact us at <span className='text-orange-500 font-semibold'>rtustore@gmail.com.</span></p>
-    </div>
-
-    <div className='flex justify-center mt-10 pb-5'>
-      <AiFillFacebook className='mx-5' size={30}/>
-      <AiFillInstagram  className='mx-5'size={30}/>
-      <AiFillMail  className='mx-5'size={30}/>
-
-    </div>
-
-    </div>
-    </div>
-
-
-    </div>
     </div>
   )
 }
 
 export default Signin
+

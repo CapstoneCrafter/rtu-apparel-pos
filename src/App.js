@@ -1,11 +1,14 @@
 import React from "react";
+import AuthContextProvider from "./Functions/authContext";
 import MainRoutes from "./Routers/MainRoutes";
 
 
 function App() {
   return (
     <div className="App">
-    <MainRoutes/>
+    <AuthContextProvider>
+      <MainRoutes/>
+    </AuthContextProvider>
     </div>
   );
 }

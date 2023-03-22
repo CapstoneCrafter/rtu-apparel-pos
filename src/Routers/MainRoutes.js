@@ -13,6 +13,7 @@ import Dashboard from '../Pages/Dashboard'
 import Orders from '../Pages/Orders'
 import Users from '../Pages/Users'
 import Message from '../Pages/Message'
+import NonAdmin from '../Pages/NonAdmin'
 
 export const MainRoutes = () => {
   return (
@@ -31,7 +32,7 @@ export const MainRoutes = () => {
           <Route path='/RTUApparel/message' element={<Message/>} />
           </Route>
          
-
+          <Route path='/restricted' element={<NonAdmin/>} />
         </Routes>
 
       

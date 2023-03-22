@@ -11,7 +11,18 @@ module.exports = {
 
       width: {
         '500': '40rem',
-      }
+      },
+      colors: {
+        'columbia' : '#F5EFED',
+        'ecru' : '#DCC48E',
+        'beige' : '#EAEFD3',
+        'sandy' : '#FC9F5B',
+        'tmbwolf' : '#FFFCF9',
+      },
+      fontFamily: {
+        fontNav: ["Alatsi", "sans-serif"], 
+        fontMenu: ['Encode_Sans', 'sans-serif'],
+      },
     },
   },
   plugins: [],

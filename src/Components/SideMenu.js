@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
 import {AiFillHome,
         AiOutlineShoppingCart,
@@ -13,7 +13,11 @@ import {  IoIosLogOut } from 'react-icons/io'
 import {  MdDashboard } from 'react-icons/md'
 
 import {  FiUsers } from 'react-icons/fi'
+import {  useAuth } from '../Functions/authContext'
 const SideMenu = () => {
+
+  const { logOut } = useAuth()
+  const navigate = useNavigate()
 
   const [isBreakpointsLarge, setIsBreakPOintsLarge] = useState(false)
   useEffect(() => {
@@ -31,91 +35,71 @@ const SideMenu = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const handleLogOut = async () =>{
+
+    try{
+      await logOut()
+      navigate('/')
+    
+    }catch(error){
+      console.log(error.message)
+
+    }
+
+  }
   return (
 
-    //     <div className='h-screen flex items-end'>
 
-    //     <div className='bg-black w-full p-3 flex justify-between md:w-auto  md:grid md:grid-cols-1 md:items-center md:h-screen lg:w-80 lg:justify-items-center '>
-        
-    //     <div className='flex items-center '>
-    //     <AiFillHome className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Home</h1>
-    //     </div>
-
-    //     <div className='flex items-center '>
-    //     <MdDashboard className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white  text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Dashboard</h1>
-    //     </div>
-
-    //     <div className='flex items-center '>
-    //     <AiOutlineShoppingCart className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white  text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Orders</h1>
-    //     </div>
-
-    //     <div className='flex items-center '>
-    //     <FiUsers className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white  text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Users</h1>
-    //     </div>
-
-    //     <div className='flex items-center '>
-    //     <AiFillMessage className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white  text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Message</h1>
-    //     </div>
-
-    //     <div className='flex items-center '>
-    //     <IoIosLogOut className={`'mx-5 md:mx-2 ${isBreakpointsLarge ? '' : 'hidden'}'`} size={30} color='white'/>
-    //     <h1 className={`text-white  text-md font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Log Out</h1>
-    //     </div>
-
-    //     </div>
-    // </div>
-    <div className='w-full h-screen bg-slate-400 grid content-between md:relative '>
+    <div className='w-[720px] h-screen  grid content-between md:w-[1080px] lg:w-full md:relative '>
         {/* <div className='w-full h-16 bg-orange-500 flex justify-center md:w-2/3 md:ml-auto md:absolute md:right-0 lg:w-3/4'></div> */}
-        <div className='w-full order-last bg-black flex justify-between p-3 md:grid md:grid-cols-1 md:items-center md:place-items-center md:w-1/3 md:h-screen lg:w-1/4'>
+        <div className='w-full order-last border-t border-gray-400  md:border-t-0 md:border-r bg-black flex justify-between p-3 md:grid md:grid-cols-1 md:items-center md:place-items-center md:w-1/5 md:h-screen lg:w-1/12 xl:w-1/12'>
 
-          <Link to='home'>
-          <div className='flex items-center'>
-          <AiFillHome className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Home</h1>
+          <Link className='' to='home'>
+          <div className='grid justify-items-center p-2 '>
+          <AiFillHome className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <h1 className={`text-[#EAEFD3] text-sm font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Home</h1>
           </div>
           </Link>
           
           <Link to='dashboard'>
-          <div className='flex items-center'>
-          <MdDashboard className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Dashboard</h1>
+          <div className='grid justify-items-center p-2 '>
+          <MdDashboard className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <h1 className={`text-[#EAEFD3]  text-sm font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Dashboard</h1>
           </div>
           </Link>
 
           <Link to='orders'>
-          <div className='flex items-center'>
-          <AiOutlineShoppingCart className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Orders</h1>
+          <div className='grid justify-items-center p-2 '>
+          <AiOutlineShoppingCart className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <h1 className={`text-[#EAEFD3]  text-sm font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Orders</h1>
           </div>
           </Link>
 
 
           <Link to='users'>
-          <div className='flex items-center'>
-          <FiUsers className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Users</h1>
+          <div className='grid justify-items-center p-2 '>
+          <FiUsers className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <h1 className={`text-[#EAEFD3]  text-sm font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Users</h1>
           </div>
           </Link>
 
 
           <Link to='message'>
-          <div className='flex items-center'>
-          <AiFillMessage className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Message</h1>
+          <div className='grid justify-items-center p-2 '>
+          <AiFillMessage className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <h1 className={`text-[#EAEFD3]  text-sm font-medium  hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Message</h1>
           </div>
           </Link>
 
-          <Link to='/'>
-          <div className='flex items-center'>
-          <IoIosLogOut className='mx-5' size={30} color='white'/>
-          <h1 className={`text-white text-md font-medium ml-2 hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>Log Out</h1>
+         
+          <div  onClick={handleLogOut} className='grid justify-items-center p-2 '>
+       
+          <IoIosLogOut className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>
+          <button className={`text-[#EAEFD3]  text-sm font-medium hover:text-orange-500 focus:text-orange-500 ${isBreakpointsLarge ? 'hidden' : ''} `}>SignOut</button>
+       
           </div>
-          </Link>
+          
 
         </div>
 
