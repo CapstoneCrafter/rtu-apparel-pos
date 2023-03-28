@@ -51,10 +51,15 @@ const SideMenu = () => {
   return (
 
 
-    <div className='w-[720px] h-screen  grid content-between md:w-[1080px] lg:w-full md:relative '>
+    // <div className='w-[720px] h-screen bg-[#C0B7B1]  grid content-between md:w-[1080px] lg:w-full md:relative '>
+    <div className='w-[720px] h-screen md:bg-[] grid content-between md:w-[1080px] lg:w-full md:relative '>
+ 
         {/* <div className='w-full h-16 bg-orange-500 flex justify-center md:w-2/3 md:ml-auto md:absolute md:right-0 lg:w-3/4'></div> */}
-        <div className='w-full order-last border-t border-gray-400  md:border-t-0 md:border-r bg-black flex justify-between p-3 md:grid md:grid-cols-1 md:items-center md:place-items-center md:w-1/5 md:h-screen lg:w-1/12 xl:w-1/12'>
 
+        <div className='w-full  order-last border-t border-gray-400  md:border-t-0 md:border-r bg-black flex justify-between p-3 md:grid md:grid-cols-1 md:items-center md:place-items-center md:w-1/5 md:h-screen lg:w-1/12 xl:w-1/12'>
+
+       
+        
           <Link className='' to='home'>
           <div className='grid justify-items-center p-2 '>
           <AiFillHome className='text-[#EAEFD3] hover:text-orange-500' size={25} color=''/>

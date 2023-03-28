@@ -48,7 +48,7 @@ const handleSubmit = async (e) => {
 
   signIn(email, password)
     .then(async (response) => {
-      // console.log(response)
+      console.log(response)
 
       // Check if a document with this email exists
       const existingUserQuery = query(userCollectionRef, where('email', '==', email))
@@ -64,7 +64,7 @@ const handleSubmit = async (e) => {
 
       // Check if the user is an admin
       if (role === 'admin') {
-        navigate('/RTUApparel')
+        navigate('/RTUApparel/home')
       } else {
         navigate('/restricted')
       }

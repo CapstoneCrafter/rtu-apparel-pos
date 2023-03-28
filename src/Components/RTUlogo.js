@@ -3,7 +3,7 @@ import rtulogo from '../Assets/rtu-logo.png'
 
 const RTUlogo = () => {
   return (
-    <img src={rtulogo} alt='' className='w-8' />
+    <img src={rtulogo} alt='' className='w-10' />
   )
 }
 
