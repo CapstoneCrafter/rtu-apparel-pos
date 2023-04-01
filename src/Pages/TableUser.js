@@ -35,16 +35,16 @@ const TableUser = () => {
         </caption>
         <thead class="text-[#EFDD8D] text-sm uppercase bg-black ">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                      -
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     id
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Email
                 </th>
               

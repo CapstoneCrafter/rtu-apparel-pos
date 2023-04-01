@@ -20,7 +20,7 @@ const NonAdmin  = () => {
     <p>For any inquiries, please feel free to email us at <span className='text-orange-500'>rtustore@gmail.com.</span></p>
     <p>To purchase RTU merchandise, please visit RTU Apparel's website.</p>
     </div>
-    <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-orange-500 focus-visible:outline uppercase ">RTU Apparel <span aria-hidden="true">→</span></Link>
+    <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-sm font-medium leading-7 text-white shadow-sm hover:opacity-80 focus-visible:outline uppercase ">RTU Apparel <span aria-hidden="true">→</span></Link>
   
     </div>
 </div>

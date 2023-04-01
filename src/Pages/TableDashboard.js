@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import {BsTrash} from 'react-icons/bs'
 import { db } from '../Database/firebase'
-import { collection, doc, getDocs } from 'firebase/firestore'
+import { collection, doc, getDocs, deleteDoc } from 'firebase/firestore'
 import { POSPagination } from '../Components/Pagination'
+import EditProduct from './EditModal'
 import {    AiOutlineEdit   } from 'react-icons/ai'
 
 const TableDashboard = () => {
 
-    const [productList, setProductList] = useState([])
+    const [productList, setProductList] = useState([]) 
+    const [pesoSign, setPesoSign] = useState('₱')
   
 
     const productRef = collection(db, 'products')
@@ -27,6 +29,20 @@ const TableDashboard = () => {
         });
     }, [productRef]);
 
+
+    const handleDelete = (id) => {
+        const newContact = productList.filter((c) => c.id !== id);
+        setProductList(newContact);
+        deleteDoc(doc(db, 'products', id))
+          .then(() => {
+            console.log('Document successfully deleted!');
+          })
+          .catch((error) => {
+            console.error('Error removing document: ', error);
+          });
+      };
+      
+
     
 
   return (
@@ -44,27 +60,27 @@ const TableDashboard = () => {
                 <th scope="col" class="px-6 py-3">
                    -
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3  font-normal font-fontMain tracking-widest ">
                     Product
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Variations
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Sizes
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Category
                 </th>
-                <th scope="col" class="px-6 py-3">
-                    Price
-                </th>
-
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Stocks
                 </th>
 
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
+                    Price
+                </th>
+
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Action
                 </th>
               
@@ -83,42 +99,45 @@ const TableDashboard = () => {
                     </div>
                 </th>
                 <td class="px-6 py-4 uppercase font-font text-sm">
-                  {ListProduct.productName}
+                  {ListProduct.productName || "-"}
                 </td>
                 <td class="px-6 py-4 uppercase font-font text-sm">
                  {ListProduct.productVariations.map((variation, index) => (
-                    <span key={index} >{variation}{index !== ListProduct.productVariations.length -1 ? ', ' : ''}</span>
+                    <span key={index} >{variation || "-"}{index !== ListProduct.productVariations.length -1 ? ', ' : ''}</span>
                  ))}
                 </td>
               
                 <td class="px-6 py-4 uppercase font-font text-sm">
                 {ListProduct.productSizes.map((size, index) => (
-                    <span key={index} >{size}{index !== ListProduct.productSizes.length -1 ? ', ' : ''}</span>
+                    <span key={index} >{size || "-"}{index !== ListProduct.productSizes.length -1 ? ', ' : ''}</span>
                  ))}
                 </td>
                
                 <td class="px-6 py-4 uppercase font-font text-sm">
-                    {ListProduct.productCategory}
+                    {ListProduct.productCategory || "-"}
                 </td>
+                
                 <td class="px-6 py-4 uppercase font-font text-sm">
-                    {ListProduct.productPrice} php
+                    {ListProduct.productStock  || "-"}
                 </td>
 
                 <td class="px-6 py-4 uppercase font-font text-sm">
-                        1
+                {ListProduct.productPrice ? (pesoSign ? pesoSign + ' ' : '') + ListProduct.productPrice : '-'}
+                        
                 </td>
 
                 <td class="px-6 py-4 uppercase font-font">
                 
 
                    <div className='ml-2 flex justify-center items-center'>  
-                   <button >
-                   <BsTrash size={20} color='red' className='mx-2'/>
+                  
+                   <button onClick={() => handleDelete(ListProduct.id)}>
+                   <BsTrash size={18} color='red' className='mx-2'/>
                    </button>
+                
                    
-                   <button>
-                    <AiOutlineEdit size={20} className='mx-2'/>
-                   </button>
+                   {/* <EditProduct/> */}
+                  
                    </div>
 
                  </td>
@@ -129,9 +148,9 @@ const TableDashboard = () => {
         </tbody>
     </table>
 </div>
-        <div className='flex justify-center'>
+        {/* <div className='flex justify-center'>
             <POSPagination/>
-        </div>
+        </div> */}
 
 
     </div>

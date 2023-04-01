@@ -16,43 +16,43 @@ const TableOrders = () => {
         </caption>
         <thead class="text-[#EFDD8D] text-sm uppercase bg-black ">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                    Email
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Student Number
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Delivery Address
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Phone Number
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Message
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Payment Option
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Product
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Variations
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Size
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Quantity
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Total Payment
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Action
                 </th>
 

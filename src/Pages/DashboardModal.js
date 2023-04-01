@@ -77,6 +77,7 @@ export default function DashboardModal() {
       productVariations: productVariationsArr,
       productSizes: productSizesArr,
       productCategory: values.productCategory,
+      productStock: values.productStock,
       productPrice: values.productPrice,
       productImg: imgUrl,
     });
@@ -92,41 +93,6 @@ export default function DashboardModal() {
     });
   };
   
-  
-  
-  
-
-  // const uploadImage = () => {
-  //   if(imageUpload == null) return
-  //   const imageRef = ref(storage `productImage ${imageUpload.name + v4() }`)
-  //   uploadBytes(imageRef, imageUpload).then(() => {
-  //     alert('Product Added!')
-  //   })
-  // }
-  
-
-  // const handleProduct = (e) => {
-  //     e.preventDefault()
-
-  //     const productVariationsArr = convertStringToArray(values.productVariations)
-  //     const productSizesArr = convertStringToArray(values.productSizes)
-
-  
-  //     addDoc(productRef, {
-  //       productName: values.productName,
-  //       productVariations: productVariationsArr,
-  //       productSizes: productSizesArr,
-  //       productCategory: values.productCategory,
-  //       productPrice: values.productPrice,
-  //       productImg: values.productImg,
-
-  //     }).then(() => {
-  //       resetForm({
-  //           values: values.initialValues
-  //       })
-  //     })
-  // }
-
   const {values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm} = useFormik({
 
           initialValues:{
@@ -135,6 +101,7 @@ export default function DashboardModal() {
                 productSizes: "",
                 productCategory: "",
                 productPrice: "",
+                productStock: "",
                 productImg: "",
           },
         
@@ -146,7 +113,7 @@ export default function DashboardModal() {
   return (
     <React.Fragment>
     <div className="flex justify-end mx-2">
-    <Button className="bg-black  normal-case "  onClick={handleOpen}>Add Product</Button>
+    <Button className="bg-black  normal-case font-fontMain tracking-widest font-normal "  onClick={handleOpen}>Add Product</Button>
     </div>
     <Dialog
       size="xs"
@@ -161,8 +128,7 @@ export default function DashboardModal() {
             <div className="mx-5">
                 <div className="pt-5 mb-5">
                     <h1 className="text-black font-bold font-fontDash text-center uppercase 2xl:text-4xl ">Create a product listing.</h1>
-                    <p className="font-font text-justify text-sm text-black">Our System website now features an intuitive add product form that allows you to input all the necessary information, 
-                    including the product name, variations, sizes, category, price, and even an image of the product.</p>
+
                 </div>
 
             <div className="form-data">
@@ -175,7 +141,7 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productName'
-                       className="w-full p-3 outline-none bg-transparent border border-indigo-600 text-black " type='text' placeholder="e.g p.e tshirt" required
+                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2 " type='text' placeholder="Enter your product name" required
                       />
                       {errors.productName && touched.productName && <p className="text-black font-2xl">{errors.productName}</p>}
                        
@@ -188,7 +154,7 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productVariations'
-                       className="w-full p-3 outline-none bg-transparent border border-indigo-600 text-black" type='text' placeholder="e.g [ shirt, package ]"
+                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product variations"
                        />
                        {errors.productVariations && touched.productVariations && <p className="text-black font-lg">{errors.productVariations}</p>}
                        
@@ -201,7 +167,7 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productSizes'
-                       className="w-full p-3  outline-none bg-transparent border border-indigo-600 text-black" type='text' placeholder="e.g [ s, m, l, xl ]" 
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product sizes"
                        />
                        {errors.productSizes && touched.productSizes && <p className="text-black font-2xl">{errors.productSizes}</p>}
                        
@@ -215,9 +181,22 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productCategory' 
-                       className="w-full p-3  outline-none bg-transparent border border-indigo-600 text-black" type='text' placeholder="e.g shirt" 
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product category"
                        />
                        {errors.productCategory && touched.productCategory && <p className="text-black font-2xl">{errors.productCategory}</p>}
+                       
+                    </div>
+
+                    <div className="mb-5">
+                       <label className="mb-2 text-sm font-medium text-black">Product Stocks</label>
+                       <input 
+                       value={values.productStock}
+                       onChange={handleChange}
+                       onBlur={handleBlur}
+                       id='productStock'
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product stocks"
+                       />
+                       {errors.productStock && touched.productStock && <p className="text-black font-2xl">{errors.productStock}</p>}
                        
                     </div>
 
@@ -228,7 +207,7 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productPrice'
-                       className="w-full p-3  outline-none bg-transparent border border-indigo-600 text-black" type='text' placeholder="100"
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product price"
                        />
                        {errors.productPrice && touched.productPrice && <p className="text-black font-2xl">{errors.productPrice}</p>}
                        

@@ -29,6 +29,8 @@ module.exports = withMT ({
         fontPOS: ['Raleway', 'sans-serif'],
         fontP : ['Josefin Sans', 'sans-serif'],
         fontC: ['Archivo', 'sans-serif'],
+        fontMain: [  'Bebas Neue', 'cursive' ] ,
+
 
       },
     },

@@ -14,8 +14,12 @@ import {AiFillMail,
 } from 'react-icons/ai'
 
 import signin from './signin.css'
-
+import AlertErr from './AlertErr'
 import posUI from '../Assets/mainPOS.png'
+
+import { Alert, Button } from "@material-tailwind/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+
 
 
 const Signin = () => {
@@ -75,21 +79,57 @@ const handleSubmit = async (e) => {
     })
     .finally(() => mounted.current && setIsSubmitting(false))
 }
+const [show, setShow] = React.useState(true);
+
   return (
-    <div className='h-screen md:flex justify-center items-center'>
+    
+    <div className='h-screen bg-black md:flex justify-center items-center'>
+  
 
         <img className='order-last md:w-3/5 lg:w-6/12 2xl:w-8/12 2xl:h-screen' src={posUI} alt=''/>
         
         <div className='md:w-2/5 md:h-[460px] lg:h-[520px] lg:w-6/12 xl:mx-10 2xl:w-4/12  '>
+                
+
           <form onSubmit={handleSubmit}>
+        
             <div className='mx-5 mt-5 md:mt-20'>
-              <label className='font-semibold text-sm text-gray-500 md:text-black'>EMAIL</label>
+
+            {/* {error && (
+              <AlertErr type='error'>
+                {error}
+              </AlertErr>
+            )} */}
+
+            {/* <div className='mb-5'>
+
+              {error && (
+                <React.Fragment>
+                <Alert
+                show={show}
+                color="red"
+                icon={<ExclamationTriangleIcon className="h-6 w-6" />}
+                dismissible={{
+                  onClose: () => setShow(false),
+                  action: (
+                    <Button variant="text" color="white" size="sm">
+                      Close
+                    </Button>
+                  ),
+                }}
+              >
+              {error}
+              </Alert>
+              </React.Fragment>
+              )}
+              </div> */}
+              <label className='font-semibold text-sm text-gray-500'>EMAIL</label>
               <input 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type='email' 
               placeholder='Enter your email' 
-              className='w-full p-3 bg-transparent border rounded-md outline-none text-sm'/>
+              className='w-full p-3 bg-transparent border rounded-sm text-white outline-none text-sm'/>
             </div>
 
             <div className='mx-5 mt-5'>
@@ -99,14 +139,13 @@ const handleSubmit = async (e) => {
               onChange={(e) => setPassword(e.target.value)}
               type='password' 
               placeholder='Enter your password' 
-              className='w-full p-3 bg-transparent border rounded-md outline-none text-sm'/>
+              className='w-full p-3 bg-transparent border text-white rounded-sm outline-none text-sm'/>
             </div>
 
             <div className='mx-5 mt-10'>
           
-            <button className='bg-indigo-600 w-full p-3 rounded-lg text-white font-semibold'>Sign In</button>
-            {error && <p className='mt-2 text-center text-red-500 font-semibold italic text-md'>{error}</p>}
-  
+            <button className='bg-indigo-600 w-full p-3 rounded-lg text-white font-medium hover:opacity-80 '>Sign In</button>
+            { error && <p className='mt-2 text-center text-red-500 font-semibold italic text-md'>{error}</p>}
           
 
           </div>

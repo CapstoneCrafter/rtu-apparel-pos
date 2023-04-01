@@ -56,7 +56,7 @@ const TableMessage = () => {
       
     
   return (
-    <div className='m-2'>
+    <div className='m-2 md:ml-0'>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-center text-white ">
@@ -66,22 +66,22 @@ const TableMessage = () => {
         </caption>
         <thead class=" text-[#EFDD8D] uppercase bg-black text-sm">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                    Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Email
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Phone
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Subject
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Message
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 font-normal font-fontMain tracking-widest">
                     Action
                 </th>
               

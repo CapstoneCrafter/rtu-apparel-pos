@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
 
@@ -6,13 +6,112 @@ import {RxCross2} from 'react-icons/rx'
 
 import home from './home.css'
 import POSPicture from '../Assets/mainPOS.png'
+import { db } from '../Database/firebase'
+import { collection,getDocs } from 'firebase/firestore'
+import GWalletModal from './GWallet'
 
 const Home = () => {
 
   const [showOutlet, setShowOutlet] = useState(true)
+  const [productList, setProductList] = useState([]) 
+
+  const [pesoSign, setPesoSign] = useState('₱')
+
+  const productRef = collection(db, 'products')
+
+  useEffect(() => {
+   
+   getDocs(productRef)
+     .then((snapshot) => {
+       let productlists = []
+       snapshot.docs.forEach((doc) => {
+         productlists.push({...doc.data(), id: doc.id}) 
+       })
+       setProductList(productlists);
+     })
+     .catch(err => {
+       console.log(err.message);
+     });
+ }, [productRef]);
+
+
+
+ const [selectedProduct, setSelectedProduct] = useState(null);
+ const [selectedItems, setSelectedItems] = useState([]);
+
+
+ const handleClick = (product) => {
+  setSelectedProduct(product);
+  setSelectedItems((prevItems) => [...prevItems, product]);
+};
+
+const handleRemoveProduct = (index) => {
+  const updatedItems = [...selectedItems];
+  updatedItems.splice(index, 1);
+  setSelectedItems(updatedItems);
+};
+
+
+const handleSizeSelect = (item, size) => {
+  const updatedItem = {
+    ...item,
+    selectedSize: size
+  };
+  setSelectedItems(prevState => {
+    const index = prevState.findIndex(p => p.id === item.id);
+    const updatedState = [...prevState];
+    updatedState[index] = updatedItem;
+    return updatedState;
+  });
+};
+
+const [subTotal, setSubTotal] = useState(0);
+
+const [quantity, setQuantity] = useState(1)
+
+// const handleIncrement = () => {
+//   setQuantity(quantity + 1)
+// }
+
+// const handleDecrement = () => {
+//   if(quantity > 1){
+//   setQuantity(quantity - 1)
+//   }
+// }
+const handleIncrement = (index) => {
+  const updatedItems = [...selectedItems];
+  const selectedItem = updatedItems[index];
+  selectedItem.quantity = selectedItem.quantity ? selectedItem.quantity + 1 : 2; // Increase quantity or set to 2 if undefined
+  setSelectedItems(updatedItems);
+};
+
+
+const handleDecrement = (index) => {
+  const updatedItems = [...selectedItems];
+  const selectedItem = updatedItems[index];
+  selectedItem.quantity = selectedItem.quantity && selectedItem.quantity > 1 ? selectedItem.quantity - 1 : 1; // Decrease quantity or set to 1 if undefined or 1
+  setSelectedItems(updatedItems);
+};
+
+useEffect(() => {
+  let total = 0;
+  selectedItems.forEach((item) => {
+    total += item.quantity * item.productPrice;
+  });
+  setSubTotal(total);
+}, [selectedItems]);
+
+
+const subtotal = selectedItems.reduce((acc, item) => {
+  const itemPrice = parseFloat(item.productPrice); // Parse price as float
+  const itemQuantity = item.quantity || 1; // Use 1 as default quantity
+  return acc + (itemPrice * itemQuantity);
+}, 0);
+
+
   return (
     
-    <div className='w-full h-auto md:w-4/5 md:ml-auto md:absolute md:right-0 lg:w-11/12 border'> 
+    <div className='w-full h-auto md:w-4/5 md:ml-auto md:absolute md:right-0 lg:w-11/12 '> 
 
       <div>
         <Navbar/>
@@ -23,7 +122,7 @@ const Home = () => {
 
 
 
-            <div className='main-div h-auto pb-5 m-5 bg-[#D9D7DD] md:w-3/5 md:mx-5 md:pb-0 2xl:w-3/4 '> {/* main div start */}
+            <div className='main-div h-auto pb-5 m-5 bg-[#2A1F2D] md:w-3/5 md:mx-5 md:pb-0 2xl:w-3/4 '> {/* main div start */}
 
                 <div className='m-5 text-white'>
                   <h1 className='pt-5 md:pt-0 font-fontP uppercase font-bold'>RTU<span className='text-orange-600'>POS</span></h1>
@@ -51,107 +150,83 @@ const Home = () => {
 
 
                  
-                {showOutlet && (  <div className='bg-white rounded-lg font-fontP mt-3 p-5 font-semibold text-black'>  {/* main item div */}
+                      {showOutlet && ( 
+                        <div className='bg-white rounded-lg font-fontP mt-3 p-5 font-semibold text-black'>  {/* main item div */}
 
-                      <h1>All</h1>
+                      <h1 className='text-xl'>All</h1>
 
                       <div className='grid gap-4 2xl:grid-cols-3 my-2'>
-
-                      <div className='border p-2 bg-gray-300 rounded-lg uppercase flex items-center'>
+                     
+                      {productList.map(product => ( 
+                      
+                      <button onClick={() => handleClick(product)}>
+                      <div  className='border p-2 bg-gray-300 rounded-lg uppercase flex items-center'>
+                      
                           
                           <div>
                           <img className='w-36 h-36 rounded-md' src={POSPicture} alt='' />
                           </div>
 
                           <div className='ml-4'>
-                          <h1 className=''>P.E TSHIRT</h1>
-                          <h1 className='text-[#FA9500] text-sm'>₱ 100 <span >/ Package</span></h1>
 
+                          {/* <div className='flex justify-between  w-[420px] md:w-full items-center text-sm'> */}
+                          <div className='flex justify-between  w-[420px] md:w-[205px] lg:w-[235px] xl:w-[338px] 2xl:w-[195px] items-center text-sm'>
 
-                          <h1 className='text-sm mt-4 -mb-2 '>Sizes</h1>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>S</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>M</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>L</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>XL</button>
+                          <h1 className='text-left'> {product.productName || "-"}</h1>
+                          <h1 className='tracking-stocks text-red-600'>25</h1>
+
                           </div>
-                        
-                      </div>
 
-                      <div className='border p-2 bg-gray-300 rounded-lg uppercase flex items-center'>
+                          <h1 className='text-[#FA9500] text-left text-sm'>  {product.productPrice ? (pesoSign ? pesoSign + ' ' : '') + product.productPrice : '-'} <span >/  {product.productVariations.map((variation, index) => (
+                            <span key={index} >{variation || "-"}{index !== product.productVariations.length -1 ? ', ' : ''}</span>
+                        ))}</span></h1>
+
+
+                          <div className='text-left'>
+                          <h1 className='text-sm mt-4 -mb-2 text-left '>Sizes</h1>
+                          <div className='sizes'>
+                          {product.productSizes.map((size, index) => (
+                            <button 
+                              key={index}
+                              className={`m-2 bg-[#EEF1EF] text-sm w-8 h-8 uppercase rounded-md hover:bg-[#EDD9A3] ${size === product.selectedSize ? 'bg-[#EDD9A3]' : ''}`}
+                              onClick={() => handleSizeSelect(product, size)}
+                            >
+                              {size}
+                            </button>
+                          ))}
+                        </div>
+                        </div>
+
+                          {/* {product.productSizes.map((size, index) => (
+                            <button 
+                            key={index}
+                            
+                            className='m-2 bg-[#EEF1EF] w-8 h-8 uppercase rounded-md hover:bg-[#EDD9A3] '>{size}</button>
+                            ))} */}
+
+                      
+                          </div>
+
+
+                         
+
+                          {/* <button className='mt-4' onClick={() => handleClick(product)}>View Details</button> */}
+
                           
-                          <div>
-                          <img className='w-36 h-36 rounded-md' src={POSPicture} alt='' />
-                          </div>
-
-                          <div className='ml-4'>
-                          <h1 className=''>P.E TSHIRT</h1>
-                          <h1 className='text-[#FA9500] text-sm'>₱ 100 <span >/ Package</span></h1>
-
-
-                          <h1 className='text-sm mt-4 -mb-2 '>Sizes</h1>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>S</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>M</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>L</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>XL</button>
-                          </div>
                         
                       </div>
-
-
-                      <div className='border p-2 bg-gray-300 rounded-lg uppercase flex items-center'>
-                          
-                          <div>
-                          <img className='w-36 h-36 rounded-md' src={POSPicture} alt='' />
-                          </div>
-
-                          <div className='ml-4'>
-                          <h1 className=''>P.E TSHIRT</h1>
-                          <h1 className='text-[#FA9500] text-sm'>₱ 100 <span >/ Package</span></h1>
-
-
-                          <h1 className='text-sm mt-4 -mb-2 '>Sizes</h1>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>S</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>M</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>L</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>XL</button>
-                          </div>
-                        
+                      </button>
+                      
+      
+                      ))}
+                  
                       </div>
-
-
-                      <div className='border p-2 bg-gray-300 rounded-lg uppercase flex items-center'>
-                          
-                          <div>
-                          <img className='w-36 h-36 rounded-md' src={POSPicture} alt='' />
-                          </div>
-
-                          <div className='ml-4'>
-                          <h1 className=''>P.E TSHIRT</h1>
-                          <h1 className='text-[#FA9500] text-sm'>₱ 100 <span >/ Package</span></h1>
-
-
-                          <h1 className='text-sm mt-4 -mb-2 '>Sizes</h1>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>S</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>M</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>L</button>
-                          <button className='m-2 bg-[#EEF1EF] w-8 h-8 rounded-md hover:bg-[#EDD9A3] '>XL</button>
-                          </div>
-                        
-                      </div>
-
-    
-        
-                    
-
-                      </div>
-
-                    
-
-
 
                   </div>/* main item div end */
-                    
+                  
                   )}
+                
+                  
                   <Outlet/>
 
 
@@ -167,60 +242,39 @@ const Home = () => {
                 <div className='m-5 text-white'>
                       <h1 className='font-fontP uppercase font-bold mb-5 pt-5 md:pt-0'>Current Order</h1>
 
-  
-                    <div className='font-fontP uppercase font-semibold text-sm mt-3 p-5 rounded-lg bg-[#30343F]'>    {/* item order */}
+                      {selectedItems.map((item,index) => (
+                    <div key={index} className='font-fontP uppercase font-semibold text-sm mt-3 p-5 rounded-lg bg-[#30343F]'>    {/* item order */}
 
                       <div className='flex justify-between'>
-                      <h1>P.E TShirt</h1>
-                      <RxCross2 size={20} color='red'/>
+                  
+                      <h1>{item.productName}</h1>
+                    
+                    <button className='remove_product' onClick={() => handleRemoveProduct(index)}>  <RxCross2 size={20} color='red'/></button>
 
                       </div>
 
-                      <h1>PACKAGE</h1>
-                      <h1>XL</h1>
-                      <h1 className='mb-2'>₱ 100</h1>
+                      <h1>{item.productVariations}</h1>
+                      <h1 className='selected_Size'>{item.selectedSize || '-'}</h1>
+                      <h1 className='mb-2'>{ pesoSign + ' ' + item.productPrice}</h1>
                         
                         <div className='flex items-center'>
-                          <button className='w-8 text-base border mr-5'>+</button>
-                          <h1>1</h1>
-                          <button className='w-8 text-base border ml-5'>-</button>
+                          <button onClick={() => handleIncrement(index)} className='w-8 text-base border mr-5'>+</button>
+                          <h1>{item.quantity}</h1>
+                          <button onClick={() => handleDecrement(index)} className='w-8 text-base border ml-5'>-</button>
                         </div>
 
-                    </div>   {/* item order end */}
 
-                      
-                    <div className='font-fontP uppercase font-semibold text-sm mt-3 p-5 rounded-lg bg-[#30343F]'>    {/* item order */}
+                    </div> 
 
-                      <div className='flex justify-between'>
-                      <h1>P.E TShirt</h1>
-                      <RxCross2 size={20} color='red'/>
-
-                      </div>
-
-                      <h1>PACKAGE</h1>
-                      <h1>XL</h1>
-                      <h1 className='mb-2'>₱ 100</h1>
-                        
-                        <div className='flex items-center'>
-                          <button className='w-8 text-base border mr-5'>+</button>
-                          <h1>1</h1>
-                          <button className='w-8 text-base border ml-5'>-</button>
-                        </div>
-
-                    </div>   {/* item order end */}
-
-                      
-
-                      
-                     
-                     
+                     ))}
+           
                       <div className='mt-10 p-5 font-fontP  font-bold text-gray-400 rounded-lg bg-[#30343F]'> {/* receipt-of-order */}
 
                          <div className=''>   
-                            <h1 className='flex justify-between'>SubTotal <span>₱ 300.00</span></h1>
+                            <h1 className='flex justify-between'>SubTotal <span>₱ {subtotal.toFixed(2)}</span></h1>
                             <h1 className='flex justify-between'>VAT Sales <span>₱ 0.00</span></h1>
                             <h1 className='border-b-2 pb-2 border-dashed flex justify-between '>VAT Amount <span>₱ 0.00</span></h1>
-                            <h1 className='pt-2 flex justify-between'>Total <span>₱ 300.00</span></h1>
+                            <h1 className='pt-2 flex justify-between'>Total <span>₱ {subtotal.toFixed(2)}</span></h1>
                         </div>
 
                       </div> {/* receipt-of-order end */}
@@ -231,7 +285,9 @@ const Home = () => {
 
                         <div className='flex justify-between items-center text-sm'>
                           <button className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600'> Cash </button>
-                          <button className='bg-[#011627] p-2 w-2/4 ml-2 rounded-full hover:bg-red-600'> G-Wallet </button>
+                          <button className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600'> <GWalletModal/> </button>
+                         
+                        
                         </div>
 
                         <button className='my-5 text-center w-full bg-white p-3 text-[#011627] rounded-lg'>Place Order</button>
