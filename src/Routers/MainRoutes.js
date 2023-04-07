@@ -22,6 +22,9 @@ import IDlace from '../Category/IDlace'
 import Patch from '../Category/Patch'
 import Jersey from '../Category/Jersey'
 
+import Error from '../Pages/Error'
+
+
 
 export const MainRoutes = () => {
   return (
@@ -50,7 +53,12 @@ export const MainRoutes = () => {
           </Route>
          
           <Route path='/restricted' element={<NonAdmin/>} />
+
+          <Route path='*' element={<Error/>} />
+         
         </Routes>
+
+       
 
       
     </Router>

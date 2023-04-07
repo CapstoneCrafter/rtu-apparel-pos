@@ -14,7 +14,6 @@ const TableMessage = () => {
 
     const colRef = collection(db, 'contact-us');
 
-
     useEffect(() => {
       
       getDocs(colRef)
@@ -56,7 +55,7 @@ const TableMessage = () => {
       
     
   return (
-    <div className='m-2 md:ml-0'>
+    <div className='m-2 '>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-center text-white ">

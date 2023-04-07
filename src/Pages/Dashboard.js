@@ -45,6 +45,20 @@ const Dashboard = () => {
     }
   }, [])
 
+    //fetching the data from our place-order collection, using this we count how many uid we have in that collection.
+    useEffect(() => {
+      const orderRef = collection(db, 'place-order')
+  
+      const unsubscribe = onSnapshot(orderRef, (querySnapshot) => {
+        setOrderCount(querySnapshot.size)
+      })
+  
+      return() => {
+        unsubscribe()
+      }
+    }, [])
+  
+
 
 
   return (
@@ -73,7 +87,7 @@ const Dashboard = () => {
       <div className='w-1/2 bg-[#1E555C] h-72 m-2 flex justify-center items-center rounded-lg  text-white '>   {/* order and revenue div */}
 
       <div className='font-bold uppercase text-xl 2xl:text-5xl font-fontMain tracking-widest mx-2'>
-      <h1>total orders: <span className='text-5xl md:text-7xl text-orange-500'>23</span></h1>
+      <h1>total orders: <span className='text-5xl md:text-7xl text-orange-500'>{orderCount}</span></h1>
       <h1>total revenue: <span className='text-5xl md:text-7xl text-orange-500'>1000</span></h1>
       </div>
 

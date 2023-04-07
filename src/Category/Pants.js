@@ -1,3 +1,4 @@
+//This page is under home.js, contains all the Pants of RTU Apparel.
 
 
 import React from 'react'

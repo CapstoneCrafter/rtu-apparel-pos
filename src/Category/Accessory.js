@@ -1,3 +1,5 @@
+//This page is under home.js, contains all the accessory of RTU Apparel.
+
 import React from 'react'
 import POSPicture from '../Assets/mainPOS.png'
 

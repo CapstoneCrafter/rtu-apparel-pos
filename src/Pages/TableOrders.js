@@ -1,9 +1,65 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import {FcCheckmark} from 'react-icons/fc'
 import {RxCross2} from 'react-icons/rx'
 import {AiFillPrinter} from 'react-icons/ai'
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { db } from '../Database/firebase'
 
 const TableOrders = () => {
+    const [productList, setProductList] = useState([])
+    const [pesoSign, setPesoSign] = useState('₱')
+
+    const [isChecked, setIsChecked] = useState(
+        localStorage.getItem('isChecked') === 'true'
+      );
+
+    const orderRef = collection(db, 'place-order')
+
+     useEffect(() => {
+      
+      getDocs(orderRef)
+        .then((snapshot) => {
+          let productlists = []
+          snapshot.docs.forEach((doc) => {
+            productlists.push({...doc.data(), id: doc.id}) 
+          })
+          setProductList(productlists);
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
+    }, [orderRef]);
+
+    useEffect(() => {
+        localStorage.setItem('isChecked', isChecked);
+      }, [isChecked]);
+    
+
+    const handleCheck = () => {
+        // setIsChecked(prevChecked => !prevChecked);
+        setIsChecked(!isChecked);
+    }
+
+    const handlePrint = () => {
+        window.print();
+      };
+
+      const handleDelete = (id) => {
+        const newOrder = productList.filter((o) => o.id !== id);
+        setProductList(newOrder);
+        deleteDoc(doc(db, 'place-order', id))
+          .then(() => {
+            console.log('Document successfully deleted!');
+          })
+          .catch((error) => {
+            console.error('Error removing document: ', error);
+          });
+      };
+
+
+
+    
+
   return (
     <div className='m-2'>
 
@@ -60,56 +116,67 @@ const TableOrders = () => {
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-black border-b dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 text-sm whitespace-nowrap text-white font-font">
-                   siuzysaur@gmail.com
+        {productList.map(OrderList => (
+            <tr key={OrderList.id}  class="bg-black border-b dark:border-gray-700">
+                <th scope="row" class={isChecked ? 'line-through text-green-500 px-6 py-4 text-sm whitespace-nowrap font-font':"px-6 py-4 text-sm whitespace-nowrap text-white font-font"}>
+                   {OrderList.email || '-'}
                 </th>
-                <td class="px-6 py-4 font-font">
-                    2021-105772
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                   {OrderList.studentNumber || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    Metro Manila, Mandaluyong City, 1550, Addition hills
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                   {OrderList.address || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    Justin Peligro
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                   {OrderList.name || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    12345678901
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                  {OrderList.phoneNumber || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    No signal in my place
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                   {OrderList.message || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    Cash on Delivery
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                   {OrderList.cash || '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                   PE TShirt
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productName).join(', ') : '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                   Package
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productVariation).join(', ') : '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    L
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productSize).join(', ') : '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    2
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productQuantity).join(', ') : '-'}
                 </td>
-                <td class="px-6 py-4 font-font">
-                    ₱ 500
+                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                {OrderList.products && OrderList.products.length > 0 
+                    ? `₱${OrderList.products.reduce((total, product) => total + product.productPrice, 0) + 30}` 
+                    : '-'
+                }
                 </td>
+
                 <td class="px-6 py-4">
                     <div className='flex justify-center items-center'>
 
                     <div className='mx-2'>
-                   <FcCheckmark size={20}/>
+                    <button onClick={handleCheck}>
+                    <FcCheckmark size={20}/>
+                    </button>
                    </div>
 
                    <div className='mx-2'>  
+                   <button onClick={() => handleDelete(OrderList.id)} >
                    <RxCross2 size={20} color='red'/>
+                   </button>
                    </div>
 
                    <div className='mx-2'>
+                   <button onClick={handlePrint}>
                     <AiFillPrinter size={20}/>
+                    </button>
                    </div>
                     </div>
                 </td>
@@ -121,7 +188,7 @@ const TableOrders = () => {
      
 
             
-      
+            ))}
           
         </tbody>
     </table>

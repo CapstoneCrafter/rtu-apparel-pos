@@ -141,7 +141,10 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productName'
-                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2 " type='text' placeholder="Enter your product name" required
+                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2 " 
+                       type='text' 
+                       placeholder="Enter your product name" 
+                       required
                       />
                       {errors.productName && touched.productName && <p className="text-black font-2xl">{errors.productName}</p>}
                        
@@ -154,7 +157,10 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productVariations'
-                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product variations"
+                       className="w-full p-2 outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" 
+                       type='text' 
+                       placeholder="Enter your product variations"
+                       required
                        />
                        {errors.productVariations && touched.productVariations && <p className="text-black font-lg">{errors.productVariations}</p>}
                        
@@ -167,7 +173,9 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productSizes'
-                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product sizes"
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" 
+                       type='text' 
+                       placeholder="Enter your product sizes"
                        />
                        {errors.productSizes && touched.productSizes && <p className="text-black font-2xl">{errors.productSizes}</p>}
                        
@@ -181,7 +189,10 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productCategory' 
-                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product category"
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" 
+                       type='text' 
+                       placeholder="Enter your product category"
+                       required
                        />
                        {errors.productCategory && touched.productCategory && <p className="text-black font-2xl">{errors.productCategory}</p>}
                        
@@ -194,7 +205,10 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productStock'
-                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product stocks"
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" 
+                       type='number' 
+                       placeholder="Enter your product stocks"
+                       required
                        />
                        {errors.productStock && touched.productStock && <p className="text-black font-2xl">{errors.productStock}</p>}
                        
@@ -207,7 +221,10 @@ export default function DashboardModal() {
                        onChange={handleChange}
                        onBlur={handleBlur}
                        id='productPrice'
-                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" type='text' placeholder="Enter your product price"
+                       className="w-full p-2  outline-none bg-transparent border border-black text-black placeholder:text-sm placeholder:pl-2" 
+                       type='number' 
+                       placeholder="Enter your product price"
+                       required
                        />
                        {errors.productPrice && touched.productPrice && <p className="text-black font-2xl">{errors.productPrice}</p>}
                        
@@ -224,7 +241,10 @@ export default function DashboardModal() {
                       setImageUpload(e.target.files[0]);
                     }}
                       id='productImg'
-                      class="block w-full text-sm text-gray-900 cursor-pointer focus:outline-none placeholder-gray-400 p-3" aria-describedby="file_input_help"  type="file"
+                      class="block w-full text-sm text-gray-900 cursor-pointer focus:outline-none placeholder-gray-400 p-3" 
+                      aria-describedby="file_input_help"  
+                      type="file"
+                      required
                       />
                       {errors.productImg && touched.productImg && <p className="text-black font-2xl">{errors.productImg}</p>}
                   

@@ -1,3 +1,5 @@
+//This page contains navbar, categories and all of the functionality of RTUPOS.
+
 import React, { useState, useEffect } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
@@ -45,6 +47,8 @@ const Home = () => {
   setSelectedItems((prevItems) => [...prevItems, product]);
 };
 
+
+
 const handleRemoveProduct = (index) => {
   const updatedItems = [...selectedItems];
   updatedItems.splice(index, 1);
@@ -57,6 +61,7 @@ const handleSizeSelect = (item, size) => {
     ...item,
     selectedSize: size
   };
+  
   setSelectedItems(prevState => {
     const index = prevState.findIndex(p => p.id === item.id);
     const updatedState = [...prevState];
@@ -107,6 +112,50 @@ const subtotal = selectedItems.reduce((acc, item) => {
   const itemQuantity = item.quantity || 1; // Use 1 as default quantity
   return acc + (itemPrice * itemQuantity);
 }, 0);
+
+const [amountTendered, setAmountTendered] = useState(0);
+  const [change, setChange] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+
+
+  const handlePaymentMethodChange = (method) => {
+    setPaymentMethod(method);
+    setAmountTendered('');
+  };
+
+  const handleAmountTenderedChange = (e) => {
+    const tendered = e.target.value;
+    setAmountTendered(tendered);
+  
+    if (tendered < subtotal) {
+      setChange(0);
+    } else {
+      setChange(tendered - subtotal);
+    }
+  };
+
+  // const handleAddToCart = (item) => {
+  //   // Check if the item is already in the cart
+  //   const itemIndex = selectedItems.findIndex((selectedItem) => selectedItem.productId === item.productId && selectedItem.selectedSize === item.selectedSize);
+    
+  //   if (itemIndex === -1) {
+  //     // Item is not in the cart, add it
+  //     setSelectedItems([...selectedItems, item]);
+  //   } else {
+  //     // Item is already in the cart, update the quantity
+  //     const newSelectedItems = [...selectedItems];
+  //     newSelectedItems[itemIndex].quantity += item.quantity;
+  //     setSelectedItems(newSelectedItems);
+  //   }
+  // };
+
+
+
+  // const handleAmountTenderedChange = (event) => {
+  //   const amount = parseFloat(event.target.value);
+  //   setAmountTendered(amount);
+  //   setChange(amount - subtotal);
+  // };
 
 
   return (
@@ -164,7 +213,7 @@ const subtotal = selectedItems.reduce((acc, item) => {
                       
                           
                           <div>
-                          <img className='w-36 h-36 rounded-md' src={POSPicture} alt='' />
+                          <img className='w-36 h-36 rounded-md' src={product.productImg + `?t=${Date.now()}`}  alt='' />
                           </div>
 
                           <div className='ml-4'>
@@ -173,7 +222,7 @@ const subtotal = selectedItems.reduce((acc, item) => {
                           <div className='flex justify-between  w-[420px] md:w-[205px] lg:w-[235px] xl:w-[338px] 2xl:w-[195px] items-center text-sm'>
 
                           <h1 className='text-left'> {product.productName || "-"}</h1>
-                          <h1 className='tracking-stocks text-red-600'>25</h1>
+                          <h1 className='tracking-stocks text-red-600'>{product.productStock}</h1>
 
                           </div>
 
@@ -196,24 +245,9 @@ const subtotal = selectedItems.reduce((acc, item) => {
                           ))}
                         </div>
                         </div>
-
-                          {/* {product.productSizes.map((size, index) => (
-                            <button 
-                            key={index}
-                            
-                            className='m-2 bg-[#EEF1EF] w-8 h-8 uppercase rounded-md hover:bg-[#EDD9A3] '>{size}</button>
-                            ))} */}
-
-                      
-                          </div>
-
+                        </div>
 
                          
-
-                          {/* <button className='mt-4' onClick={() => handleClick(product)}>View Details</button> */}
-
-                          
-                        
                       </div>
                       </button>
                       
@@ -271,8 +305,9 @@ const subtotal = selectedItems.reduce((acc, item) => {
                       <div className='mt-10 p-5 font-fontP  font-bold text-gray-400 rounded-lg bg-[#30343F]'> {/* receipt-of-order */}
 
                          <div className=''>   
-                            <h1 className='flex justify-between'>SubTotal <span>₱ {subtotal.toFixed(2)}</span></h1>
+                            <h1 className='flex justify-between '>SubTotal <span>₱ {subtotal.toFixed(2)}</span></h1>
                             <h1 className='flex justify-between'>VAT Sales <span>₱ 0.00</span></h1>
+                            {/* <h1 className='flex justify-between '>VAT Amount <span>₱ 0.00</span></h1> */}
                             <h1 className='border-b-2 pb-2 border-dashed flex justify-between '>VAT Amount <span>₱ 0.00</span></h1>
                             <h1 className='pt-2 flex justify-between'>Total <span>₱ {subtotal.toFixed(2)}</span></h1>
                         </div>
@@ -284,10 +319,50 @@ const subtotal = selectedItems.reduce((acc, item) => {
                       <div className='mt-5 p-5 font-fontP uppercase font-bold rounded-lg bg-[#30343F]'> {/*place-order div */}
 
                         <div className='flex justify-between items-center text-sm'>
-                          <button className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600'> Cash </button>
-                          <button className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600'> <GWalletModal/> </button>
+                          <button 
+                          // className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full  focus:bg-red-600 hover:bg-red-600 active:bg-red-600  '
+                          className={`bg-[#011627] p-2 w-2/4 mr-2 rounded-full focus:bg-red-600 hover:bg-red-600 active:bg-red-600 ${
+            paymentMethod === 'cash' ? 'bg-red-600' : ''
+          }`}
+          onClick={() => handlePaymentMethodChange('cash')}
+                          > Cash
+                          </button>
+
+                          <button
+                          //  className='bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600'
+                          className={`bg-[#011627] p-2 w-2/4 mr-2 rounded-full hover:bg-red-600 ${
+            paymentMethod === 'gw' ? 'bg-red-600' : ''
+          }`}
+          onClick={() => handlePaymentMethodChange('gw')}
+                           
+                           > <GWalletModal/> </button>
                          
                         
+                        </div>
+                        {paymentMethod === 'cash' && (
+
+                        <div className='text-sm mt-5 pb-3 border-b-2 border-white  border-dashed text-black'>
+                          <label className='block text-gray-400 mb-2'>Amount Tender</label>
+                          <input 
+                          className='w-full p-2 outline-none bg-transparent border border-white text-white placeholder:text-sm placeholder:pl-1' 
+                          type='number' 
+                          placeholder='Input the customers payment in cash'
+                          value={amountTendered}
+                          onChange={handleAmountTenderedChange} 
+                          />
+                        </div>
+                        )}
+
+                        {paymentMethod === 'cash' && (
+                          <div className='mt-5 text-sm'>
+                          <h1 className='flex justify-between text-gray-400'>Change <span>₱ {change.toFixed(2)}</span></h1>
+                          </div>
+                          )}
+
+                        <div className='mt-2 text-sm'>
+                          {/* <h1 className='pt-2 flex justify-between text-gray-400'>Total <span>₱ {subtotal.toFixed(2)}</span></h1> */}
+                          {/* <h1 className='flex justify-between text-gray-400'>Change <span>₱ {change.toFixed(2)}</span></h1> */}
+                          <h1 className='flex justify-between text-gray-400'>No. of Items <span>{selectedItems.length}</span></h1>
                         </div>
 
                         <button className='my-5 text-center w-full bg-white p-3 text-[#011627] rounded-lg'>Place Order</button>
