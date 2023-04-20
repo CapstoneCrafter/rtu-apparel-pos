@@ -6,16 +6,21 @@ import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore'
 
 const TableMessage = () => {
 
+    //We created a state for our productList, using this we can map through our 'contact-us' collection firestore.
     const [contact, setContact] = useState([]);
-    // const [isChecked, setIsChecked] = useState(false)
+
+    //By using localStorage, the button state can be preserved even if the user refreshes the page or closes the browser.
     const [isChecked, setIsChecked] = useState(
         localStorage.getItem('isChecked') === 'true'
       );
 
+    //We created a const called 'colRef' in short for contactReference.
+    //Using this we set our 'colRef' to our collection 'contact-us'
     const colRef = collection(db, 'contact-us');
 
-    useEffect(() => {
-      
+    //Using useEffect we fetch the 'contact-us' collection in our firestore firebase.
+    //When we say 'fetch' we get the data from database and display it into our web page table.
+    useEffect(() => { 
       getDocs(colRef)
         .then((snapshot) => {
           let contactData = []
@@ -29,7 +34,7 @@ const TableMessage = () => {
         });
     }, [colRef]);
 
-
+    //This function will delete the specific row in my table.
     const handleDelete = (id) => {
         const newContact = contact.filter((c) => c.id !== id);
         setContact(newContact);
@@ -42,16 +47,16 @@ const TableMessage = () => {
           });
       };
 
-      useEffect(() => {
-        localStorage.setItem('isChecked', isChecked);
-      }, [isChecked]);
-    
-
+     
+     //Using this function we can check or unchecked the row in our table.
     const handleCheck = () => {
-        // setIsChecked(prevChecked => !prevChecked);
         setIsChecked(!isChecked);
     }
 
+    //Using useEffect we stored our isChecked in our localStorage, so whenever we switch to different web page, the isChecked remain the same.
+    useEffect(() => {
+      localStorage.setItem('isChecked', isChecked);
+    }, [isChecked]);
       
     
   return (
@@ -139,86 +144,3 @@ const TableMessage = () => {
 
 export default TableMessage
 
-// import React from 'react'
-// import {FcCheckmark} from 'react-icons/fc'
-// import {RxCross2} from 'react-icons/rx'
-
-// const TableMessage = () => {
-//   return (
-//     <div className='m-2'>
-
-//     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-//     <table class="w-full text-sm text-center text-white ">
-//         <caption class="bg-black p-5 text-lg font-semibold  text-left  text-gray-900  dark:text-white ">
-//             Contact
-//             <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">This page serves as a comprehensive archive of all messages submitted by users on the RTU Apparel website.</p>
-//         </caption>
-//         <thead class="text-xs text-gray-700 uppercase bg-black dark:text-gray-400">
-//             <tr>
-//                 <th scope="col" class="px-6 py-3">
-//                    Name
-//                 </th>
-//                 <th scope="col" class="px-6 py-3">
-//                     Email
-//                 </th>
-//                 <th scope="col" class="px-6 py-3">
-//                     Phone
-//                 </th>
-//                 <th scope="col" class="px-6 py-3">
-//                     Subject
-//                 </th>
-//                 <th scope="col" class="px-6 py-3">
-//                     Message
-//                 </th>
-//                 <th scope="col" class="px-6 py-3">
-//                     Action
-//                 </th>
-              
-//             </tr>
-//         </thead>
-//         <tbody>
-//             <tr class="bg-black border-b dark:border-gray-700">
-//                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-//                     Justin Peligro
-//                 </th>
-//                 <td class="px-6 py-4">
-//                     siuzysaur@gmail.com
-//                 </td>
-//                 <td class="px-6 py-4">
-//                     12345678901
-//                 </td>
-//                 <td class="px-6 py-4">
-//                     Item Refund
-//                 </td>
-//                 <td class="px-6 py-4">
-//                    I want my item to refund
-//                 </td>
-//                 <td class="px-6 py-4 text-right">
-
-//                  <div className='flex justify-center '>
-                 
-//                  <div className='mr-2'>
-//                    <FcCheckmark size={20}/>
-//                    </div>
-
-//                    <div className='ml-2'>  
-//                    <RxCross2 size={20} color='red'/>
-//                    </div>
-
-//                  </div>
-//                 </td>
-                  
-//             </tr>
-      
-          
-//         </tbody>
-//     </table>
-// </div>
-
-
-
-//     </div>
-//   )
-// }
-
-// export default TableMessage

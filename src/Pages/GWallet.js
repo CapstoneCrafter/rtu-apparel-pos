@@ -1,19 +1,11 @@
-import React, {useState, useEffect} from "react";
-import {
-  Button,
-  Dialog,
+import React from "react"
+import { Dialog } from "@material-tailwind/react";
+import QrCode from '../Assets/webp-img/fakeqr.webp'
 
-} from "@material-tailwind/react";
-
-import QrCode from '../Assets/fakeqr.jpg'
-
- 
 export default function GWalletModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
 
-
- 
   return (
     <React.Fragment>
     <div className="">

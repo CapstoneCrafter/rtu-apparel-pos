@@ -1,9 +1,11 @@
+//this navbar is only for our home.js wherein it will display the email or name of the user who login, on top of that it will display the image of the user.
 import React from 'react'
 import { useAuth } from '../Functions/authContext'
 
 
 const Navbar = () => {
 
+    //currentUser is from our authContext.js
     const { currentUser } = useAuth()
 
   return (
@@ -12,7 +14,7 @@ const Navbar = () => {
         <div className='flex items-center justify-between mx-5 my-2 '>
 
             <div>
-            <h1 className='font-fontPOS font-bold text-lg'>Welcome, <span className='font-semibold text-red-600'>{currentUser.email}</span> </h1>
+            <h1 className='font-fontPOS font-bold text-lg'>Welcome, <span className='font-semibold text-red-600'>{(currentUser && currentUser.displayName) || currentUser.email}</span> </h1>
           
             </div>
 

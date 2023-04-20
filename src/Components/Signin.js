@@ -1,37 +1,38 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import {collection, where, query, getDocs, addDoc} from 'firebase/firestore'
-import {  useAuth } from '../Functions/authContext'
+import { useNavigate } from 'react-router-dom'
+import {collection, where, query, getDocs} from 'firebase/firestore'
+import { useAuth } from '../Functions/authContext'
 import { db } from '../Database/firebase'
-
-import {AiFillMail,
-        AiFillFacebook,
-        AiFillInstagram,
-        AiOutlineEye,
-        AiOutlineEyeInvisible,
-        AiOutlineMail
-
-} from 'react-icons/ai'
-
-import signin from './signin.css'
-import AlertErr from './AlertErr'
-import posUI from '../Assets/mainPOS.png'
-
-import { Alert, Button } from "@material-tailwind/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-
+import posUI from '../Assets/webp-img/mainPOS.webp'
 
 
 const Signin = () => {
+  
+  //created a state to hold the value of user email.
   const [email, setEmail] = useState('')
+
+  //created a state to hold the value of user password.
   const [password, setPassword] = useState('')
+
+  //created a ref for our users.
   const userCollectionRef = collection(db, "users-info" )
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const {signIn} = useAuth()
+
+  //created for mounting.
+  const [isSubmitting,setIsSubmitting] = useState(false)
+
+  //this signIn function is from authContext.js
+  const { signIn  } = useAuth()
+
+  //created a const called mounted and we equal it to useRef.
   const mounted = useRef(false)
+
+  //this state will handle the error in our login page.
   const [error, setError] = useState('')
+
+  //created a const called navigate and set it to useNavigate, it will allow us to go to different web page
   const navigate = useNavigate()
 
+  //this useEffect will handle our login.
   useEffect(() => {
     mounted.current = true
     return() => {
@@ -39,6 +40,7 @@ const Signin = () => {
     }
 }, [])
 
+//this function will check if the email is existing to our database, if the user exist it will check the role, if admin proceed to the RTUPOS, if not, restrict it and will be directed to RTU Apparel page.
 const handleSubmit = async (e) => {
   e.preventDefault()
   setError('')
@@ -68,7 +70,7 @@ const handleSubmit = async (e) => {
 
       // Check if the user is an admin
       if (role === 'admin') {
-        navigate('/RTUApparel/home')
+        navigate('/RTUApparel')
       } else {
         navigate('/restricted')
       }
@@ -78,8 +80,7 @@ const handleSubmit = async (e) => {
       setError(error.message)
     })
     .finally(() => mounted.current && setIsSubmitting(false))
-}
-const [show, setShow] = React.useState(true);
+  }
 
   return (
     
@@ -95,34 +96,7 @@ const [show, setShow] = React.useState(true);
         
             <div className='mx-5 mt-5 md:mt-20'>
 
-            {/* {error && (
-              <AlertErr type='error'>
-                {error}
-              </AlertErr>
-            )} */}
-
-            {/* <div className='mb-5'>
-
-              {error && (
-                <React.Fragment>
-                <Alert
-                show={show}
-                color="red"
-                icon={<ExclamationTriangleIcon className="h-6 w-6" />}
-                dismissible={{
-                  onClose: () => setShow(false),
-                  action: (
-                    <Button variant="text" color="white" size="sm">
-                      Close
-                    </Button>
-                  ),
-                }}
-              >
-              {error}
-              </Alert>
-              </React.Fragment>
-              )}
-              </div> */}
+         
               <label className='font-semibold text-sm text-gray-500'>EMAIL</label>
               <input 
               value={email}

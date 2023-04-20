@@ -18,9 +18,7 @@ export const Error = () => {
         <h1 className='font-black '>Uh oh! I think you're lost.</h1>
         <p className='font-medium mb-5'>It looks like the page you're looking for doesn't exist.</p>
         {currentUser ?  <Link to='/RTUApparel' className="rounded-md bg-black px-3.5 py-1.5 text-base font-medium leading-7 text-white shadow-sm hover:bg-orange-500 focus-visible:outline ">Go back home <span aria-hidden="true">→</span></Link> :
-        <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-base font-medium leading-7 text-white shadow-sm hover:bg-orange-500 focus-visible:outline ">Go back home <span aria-hidden="true">→</span></Link>}
-        {/* <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-base font-medium leading-7 text-white shadow-sm hover:bg-orange-500 focus-visible:outline ">Go back home <span aria-hidden="true">→</span></Link> */}
-      
+        <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-base font-medium leading-7 text-white shadow-sm hover:bg-orange-500 focus-visible:outline ">Go back home <span aria-hidden="true">→</span></Link>}      
         </div>
     </div>
  

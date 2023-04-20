@@ -4,13 +4,13 @@ import {BrowserRouter as Router,
         Route
 } from 'react-router-dom'
 
-
 import Signin from '../Components/Signin'
 import SideMenu from '../Components/SideMenu'
 
 import Home from '../Pages/Home'
 import Dashboard from '../Pages/Dashboard'
 import Orders from '../Pages/Orders'
+import POSOrder from '../Pages/POSOrder'
 import Users from '../Pages/Users'
 import Message from '../Pages/Message'
 import NonAdmin from '../Pages/NonAdmin'
@@ -24,7 +24,8 @@ import Jersey from '../Category/Jersey'
 
 import Error from '../Pages/Error'
 
-
+import ProtectedRoutes from '../Functions/ProtectedRoutes'
+import UserProtected from '../Functions/UserProtected'
 
 export const MainRoutes = () => {
   return (
@@ -35,25 +36,25 @@ export const MainRoutes = () => {
         
       <Routes>
           <Route path='/' element={<Signin/>} />
-          <Route path='/RTUApparel' element={<SideMenu/>}>
+          <Route path='/RTUApparel' element={<UserProtected><SideMenu/></UserProtected>}>
 
-          <Route path='home' element={<Home/>} >
-              <Route path='uniform' element={<Uniform/>} /> 
-              <Route path='pants' element={<Pants/>} /> 
-              <Route path='accessory' element={<Accessory/>} /> 
-              <Route path='idlace' element={<IDlace/>} /> 
-              <Route path='patch' element={<Patch/>} /> 
-              <Route path='jersey' element={<Jersey/>} /> 
+          <Route path='home' element={<UserProtected><Home/></UserProtected>} >
+              <Route path='uniform' element={<UserProtected><Uniform/></UserProtected>} /> 
+              <Route path='pants' element={<UserProtected><Pants/></UserProtected>} /> 
+              <Route path='accessory' element={<UserProtected><Accessory/></UserProtected>} /> 
+              <Route path='idlace' element={<UserProtected><IDlace/></UserProtected>} /> 
+              <Route path='patch' element={<UserProtected><Patch/></UserProtected>} /> 
+              <Route path='jersey' element={<UserProtected><Jersey/></UserProtected>} /> 
           </Route>
           
-          <Route path='dashboard' element={<Dashboard/>} />
-          <Route path='orders' element={<Orders/>} />
-          <Route path='users' element={<Users/>} />
-          <Route path='message' element={<Message/>} />
+          <Route path='dashboard' element={<UserProtected><Dashboard/></UserProtected>} />
+          <Route path='orders' element={<UserProtected><Orders/></UserProtected>} />
+          <Route path='posOrders' element={<UserProtected><POSOrder/></UserProtected>} />
+          <Route path='users' element={<UserProtected><Users/></UserProtected>} />
+          <Route path='message' element={<UserProtected><Message/></UserProtected>} />
           </Route>
          
-          <Route path='/restricted' element={<NonAdmin/>} />
-
+          <Route path='/restricted' element={<ProtectedRoutes><NonAdmin/></ProtectedRoutes>} />
           <Route path='*' element={<Error/>} />
          
         </Routes>

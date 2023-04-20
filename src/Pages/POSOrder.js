@@ -1,13 +1,13 @@
 import React from 'react'
-import TableOrders from './TableOrders'
+import TablePOSOrders from './TablePOSOrders'
 
 
-const Orders = () => {
+const POSOrder = () => {
   return (
     <div className='w-full h-auto md:w-4/5 md:ml-auto md:absolute md:right-0 lg:w-11/12'> 
    
     <div>
-        <TableOrders/>
+        <TablePOSOrders/>
     </div>
 
     
@@ -15,4 +15,4 @@ const Orders = () => {
   )
 }
 
-export default Orders
+export default POSOrder

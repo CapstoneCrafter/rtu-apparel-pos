@@ -1,19 +1,16 @@
 // authContext for our Sign in / Sign up / forget & reset Password system.
 
 import {createContext,
-    useContext,
-    useEffect,
-    useState,
-    } from "react";    
+        useContext,
+        useEffect,
+        useState,
+} from "react";    
 
 import { auth } from '../Database/firebase'
 
 import { signInWithEmailAndPassword,
          onAuthStateChanged,
-        signOut,
-        sendPasswordResetEmail,
-        confirmPasswordReset,
-
+         signOut,    
 } from "firebase/auth";
 
 const AuthContext = createContext({
@@ -21,10 +18,6 @@ currentUser: null,
 signUp: () => Promise,
 signIn: () => Promise,
 logOut: () => Promise,
-googleSignIn: () => Promise,
-forgotPassword: () => Promise,
-resetPassword: () => Promise
-
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -50,24 +43,10 @@ const logOut = () => {
     return signOut(auth)
 }
 
-const forgotPassword = (email) => {
-    return sendPasswordResetEmail(auth, email, {
-        url: 'http://localhost:3000/signin'
-    })
-
-}
-
-const resetPassword = (oobCode, newPassword) => {
-    return confirmPasswordReset(auth, oobCode, newPassword)
-}
-
-
 const value = {
     currentUser,
     signIn,
-    logOut,
-    forgotPassword,
-    resetPassword,
+    logOut
 }
 
 return <AuthContext.Provider value={value}>

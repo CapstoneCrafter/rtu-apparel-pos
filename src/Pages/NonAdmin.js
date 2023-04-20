@@ -1,5 +1,4 @@
 import React from 'react'
-import {GrStatusWarning} from 'react-icons/gr'
 import { Link } from 'react-router-dom'
 import rtulogo from '../Assets/rtu-logo.png'
 
@@ -20,7 +19,7 @@ const NonAdmin  = () => {
     <p>For any inquiries, please feel free to email us at <span className='text-orange-500'>rtustore@gmail.com.</span></p>
     <p>To purchase RTU merchandise, please visit RTU Apparel's website.</p>
     </div>
-    <Link to='/' className="rounded-md bg-black px-3.5 py-1.5 text-sm font-medium leading-7 font-fontMain tracking-widest text-white shadow-sm hover:opacity-80 focus-visible:outline uppercase ">RTU Apparel <span aria-hidden="true">→</span></Link>
+    <Link to='https://rtu-apparel.web.app/' className="rounded-md bg-black px-3.5 py-1.5 text-sm font-medium leading-7 font-fontMain tracking-widest text-white shadow-sm hover:opacity-80 focus-visible:outline uppercase ">RTU Apparel <span aria-hidden="true">→</span></Link>
   
     </div>
 </div>

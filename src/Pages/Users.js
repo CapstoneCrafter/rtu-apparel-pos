@@ -1,5 +1,4 @@
 import React from 'react'
-import RTUlogo from '../Components/RTUlogo'
 import TableUser from './TableUser'
 
 const Users = () => {
