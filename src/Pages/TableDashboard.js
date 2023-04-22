@@ -3,7 +3,7 @@ import {BsTrash} from 'react-icons/bs'
 import { RxReset } from 'react-icons/rx'
 import { db } from '../Database/firebase'
 import { collection, doc, getDocs, deleteDoc, updateDoc,  } from 'firebase/firestore'
-import tempImg from '../Assets/mainPOS.png'
+import tempImg from '../Assets/webp-img/mainPOS.webp'
 import AlertErr from '../Components/AlertErr'
 import AlertSuccess from '../Components/AlertSuccess'
 

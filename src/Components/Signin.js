@@ -41,7 +41,7 @@ const Signin = () => {
 }, [])
 
 //this function will check if the email is existing to our database, if the user exist it will check the role, if admin proceed to the RTUPOS, if not, restrict it and will be directed to RTU Apparel page.
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault()
   setError('')
 
@@ -54,7 +54,7 @@ const handleSubmit = async (e) => {
 
   signIn(email, password)
     .then(async (response) => {
-      console.log(response)
+      // console.log(response)
 
       // Check if a document with this email exists
       const existingUserQuery = query(userCollectionRef, where('email', '==', email))

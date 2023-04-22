@@ -13,9 +13,10 @@ const TableOrders = () => {
     const [productList, setProductList] = useState([])
 
     //By using localStorage, the button state can be preserved even if the user refreshes the page or closes the browser.
-    const [isChecked, setIsChecked] = useState(
-        localStorage.getItem('isChecked') === 'true'
+    const [checkedRows, setCheckedRows] = useState(
+        JSON.parse(localStorage.getItem('checkedRows')) || {}
       );
+  
 
     //this state will hold the error message for handleDelete function
     const [showError, setShowError] = useState(false)
@@ -44,14 +45,18 @@ const TableOrders = () => {
     }, [orderRef]);
 
     //Using this function we can check or unchecked the row in our table.
-    const handleCheck = () => {
-        setIsChecked(!isChecked);
-    }
+    const handleCheck = (index) => {
+        setCheckedRows({
+          ...checkedRows,
+          [index]: !checkedRows[index]
+        });
+      };
 
     //Using useEffect we stored our isChecked in our localStorage, so whenever we switch to different web page, the isChecked remain the same.
     useEffect(() => {
-        localStorage.setItem('isChecked', isChecked);
-      }, [isChecked]);
+        localStorage.setItem('checkedRows', JSON.stringify(checkedRows));
+      }, [checkedRows]);
+        
 
     //This function will print the order.
     const handlePrint = () => {
@@ -155,53 +160,53 @@ const TableOrders = () => {
             </tr>
         </thead>
         <tbody>
-        {productList.map(OrderList => (
+        {productList.map((OrderList, index) => (
             <tr key={OrderList.id}  class="bg-black border-b dark:border-gray-700">
-                <th scope="row" class={isChecked ? 'line-through text-green-500 px-6 py-4 text-sm whitespace-nowrap font-font':"px-6 py-4 text-sm whitespace-nowrap text-white font-font"}>
+                <th scope="row" class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 text-sm whitespace-nowrap font-font':"px-6 py-4 text-sm whitespace-nowrap text-white font-font"}>
                    {OrderList.email || '-'}
                 </th>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
                    {OrderList.studentNumber || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
                    {OrderList.address || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
                    {OrderList.name || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
                   {OrderList.phoneNumber || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font':"px-6 py-4 font-font"}>
                    {OrderList.message || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                    {OrderList.cash || '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                 {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productName).join(', ') : '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                 {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productVariation).join(', ') : '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                 {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productSize).join(', ') : '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                 {OrderList.products && OrderList.products.length > 0 ? OrderList.products.map((product) => product.productQuantity).join(', ') : '-'}
                 </td>
 
-                <td class={isChecked ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
+                <td class={checkedRows[index] ? 'line-through text-green-500 px-6 py-4 font-font uppercase':"px-6 py-4 font-font uppercase"}>
                 {OrderList.products && OrderList.products.length > 0 ? `₱${OrderList.products.reduce((total, product) => total + product.productPrice, 0) + 30}` : '-'}
                 </td>
 
@@ -209,7 +214,7 @@ const TableOrders = () => {
                     <div className='flex justify-center items-center'>
 
                 <div className='mx-2'>
-                    <button onClick={handleCheck}>
+                <button onClick={() => handleCheck(index)}>
                      <FcCheckmark size={20}/>
                     </button>
                 </div>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { db } from '../Database/firebase'
 import { collection,getDocs, query, where } from 'firebase/firestore'
 import { ReceiptContext } from '../Functions/receiptContext'
-import tempImg from '../Assets/mainPOS.png'
+import tempImg from '../Assets/webp-img/mainPOS.webp'
 
 
 const Patch = () => {
