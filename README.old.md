@@ -1,6 +1,6 @@
-# rtu-apparel-pos
+<h1> rtu-apparel-pos </h1>
 
-# -------------deployment-guide-------------
+<h1><center> -------------deployment-guide------------- </center></h1>
 
 # since i merged the data of rtu-apparel and rtu-pos, we modify the firebase.json in order to deploy them both in different domain.
 
